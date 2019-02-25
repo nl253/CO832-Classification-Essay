@@ -61,9 +61,25 @@
 %% - "sensitive attributes" 
 %% - mention philosophical issues
 
-In recent years, researchers have began raising the issue of fairness and bias in  classification. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being unfair. "Biased" and unfair will refer to prejudicial, prematurely making a judgment without sufficient valid evidence or making decisions based on incomplete or inaccurate information. This essay will explore how this problem can be addressed.
+In recent years, researchers have began raising the issue of fairness and bias in  classification. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being "unfair". \emph{Biased} and \emph{unfair} will refer to prejudicial, prematurely making a judgment without sufficient valid evidence, classifying based on what the majority is like and ignoring individual differences or making decisions based on incomplete or inaccurate information. 
+
+The problem can be looked at from a number of perspectives. Firstly, we can consider how the assumptions of an algorithm or the way it creates the model cause it the be biased. It may be more or less sensitive to some or some combinations of attributes. Secondly, we can consider how the dataset may bias the predictions of algorithms trained on it. Within that we can discuss the issues of data inaccuracies, biased collection, class imbalance and statistical significance. Thirdly can can consider the case of making predictions based on protected attributes \footnote{gender, race, age, sexual orientation etc.} in general. Some decisions that are made based on the output of classifiers may seriously affect people's lives e.g. credit score.
+
+There are ethical and legal issues associated with this problem so the data mining community has began investigating ways in which we can remedy it which this essay will discuss.
 
 \section*{Biased Data}
+
+One of the potential root causes of bias in a classification task can be the dataset. Data can be collected in such a way that there is a lack of representation from certain individuals. For instance, a video streaming company might collect data about it's users. From that data, they might infer, that people of Asian descent have a preference for comedies. However the vast majority of the company's clients are from Europe. Since Asian people do not originate from Europe they are underrepresented. As a result, they might constitute a small fraction of the user base. If the company was to make predictions based on that data they might be biased by the particular behaviour of (relatively) small number of the Asian people living in Europe. The predictions that said company makes about Asians living in Asia may not be valid at all.
+
+The fundamental issue is that the traditional algorithms used in data mining do not focus on correcting errors or deficiencies of the dataset. In a sense they blindly trust the input data as a representation of reality. This might cause them to be misled by the errors in dataset.
+
+Questions that data mining experts should be asking themselves when making predictions are:
+
+\begin{itemize}		
+  \item Is this statistically significant? What confidence do I have in the prediction?
+  \item Was the data collection process biased? Is it possible that the measurements taken were biased? Was some information lost in the process of data pre-processing?
+  \item How well is every class represented?
+\end{itemize}		
 
 \section*{Proposed Improvements}
 
@@ -72,8 +88,6 @@ In recent years, researchers have began raising the issue of fairness and bias i
 \section*{Unbiased Classification}
 
 \section*{Accuracy vs Fairness}
-
-\section*{Classification}
 
 \section*{The Goal}
 
