@@ -61,11 +61,12 @@
 %% - "sensitive attributes" 
 %% - mention philosophical issues
 
-In recent years, researchers have began raising the issue of fairness and bias in  classification. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being "unfair". \emph{Biased} and \emph{unfair} will refer to prejudicial, prematurely making a judgment without sufficient valid evidence, classifying based on what the majority is like and ignoring individual differences or making decisions based on incomplete or inaccurate information. 
+In recent years, researchers have began raising the issue of fairness and bias in  classification. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being "unfair". \footnote{\emph{Biased} and \emph{unfair} will refer to prejudicial, prematurely making a judgment without sufficient valid evidence, classifying based on what the majority is like and ignoring individual differences or making decisions based on incomplete or inaccurate information.}
 
-The problem can be looked at from a number of perspectives. Firstly, we can consider how the assumptions of an algorithm or the way it creates the model cause it the be biased. It may be more or less sensitive to some or some combinations of attributes. Secondly, we can consider how the dataset may bias the predictions of algorithms trained on it. Within that we can discuss the issues of data inaccuracies, biased collection, class imbalance and statistical significance. Thirdly can can consider the case of making predictions based on protected attributes \footnote{gender, race, age, sexual orientation etc.} in general. Some decisions that are made based on the output of classifiers may seriously affect people's lives e.g. credit score.
 
-There are ethical and legal issues associated with this problem so the data mining community has began investigating ways in which we can remedy it which this essay will discuss.
+The problem can be looked at from a number of perspectives. Various researcher have interpreted the problem differently. Firstly, we can consider how the assumptions of an algorithm or the way it creates the model cause it the be biased. It may be more or less sensitive to some or some combinations of attributes. Secondly, we can consider how the training dataset may bias the model. Within that we can discuss the issues of data inaccuracies \footnote{missing attributes and biased collection}, class imbalance \footnote{underrepresentation of some classes} and statistical significance of predictions. Thirdly can can consider the case of making predictions based on protected attributes \footnote{gender, race, age, sexual orientation etc.} in general. Some decisions that are made based on the output of classifiers may seriously affect people's lives \footnote{e.g. credit score}. 
+
+There are ethical and legal issues associated with this problem \footnote{The Equality Act} so the data mining community has began investigating ways in which we can remedy it which this essay will discuss.
 
 \section*{Biased Data}
 
@@ -75,12 +76,6 @@ The fundamental issue is that the traditional algorithms used in data mining do 
 
 Questions that data mining experts should be asking themselves when making predictions are:
 
-\begin{itemize}		
-  \item Is this statistically significant? What confidence do I have in the prediction?
-  \item Was the data collection process biased? Is it possible that the measurements taken were biased? Was some information lost in the process of data pre-processing?
-  \item How well is every class represented?
-\end{itemize}		
-
 \section*{Proposed Improvements}
 
 \section*{Measuring Bias}
@@ -89,15 +84,11 @@ Questions that data mining experts should be asking themselves when making predi
 
 \section*{Accuracy vs Fairness}
 
-\section*{The Goal}
-
-The ultimate aim of research into fairness-aware classification algorihtms is to not be biased by incomplete data.
-
-Applying an EA entails the use of 3 main components: a selection operator \footnote{to remove the unfit candidates from the population}, genetic operator \footnote{to generate new candidate solutions} and a fitness function \footnote{to calculate how fit the candidates are} \cite{mesghouni2004, yu2002, diveev2017, aljarrah2017, timilsina2015}.  
-
-In GAs candidates are most commonly encoded using bit-strings \cite[p.~127]{norvig2010} and this encoding has received the most attention in the literature \cite[p.~103]{eberhart2007}.  However, it is not certain that this is the most natural, the most convenient or the most efficient encoding for a scheduling problem.  The standard bit-string encoding has been criticised by Mesghouni et al.  who say ``[...] this approach cannot usually be used for real word engineering problems such as combinatorial ones [...]''\cite[p.~93]{mesghouni2004}. Instead they suggest the use of numbers to represent every gene so that each candidate is a permutation of numbers.  The use of numbers instead of bit-strings has also been endorsed by May et al.  and Solanki who also used numbers to encode their candidate solutions. \cite[p.~7076]{may2015} \cite[p.~3868]{solanki2015} Researchers who wish to abandon the traditional approach might need to invent new operators or adapt existing ones to fit their encoding scheme which may be seen as a disadvantage.
+% In GAs candidates are most commonly encoded using bit-strings \cite[p.~127]{norvig2010} and this encoding has received the most attention in the literature \cite[p.~103]{eberhart2007}.  However, it is not certain that this is the most natural, the most convenient or the most efficient encoding for a scheduling problem.  The standard bit-string encoding has been criticised by Mesghouni et al.  who say ``[...] this approach cannot usually be used for real word engineering problems such as combinatorial ones [...]''\cite[p.~93]{mesghouni2004}. Instead they suggest the use of numbers to represent every gene so that each candidate is a permutation of numbers.  The use of numbers instead of bit-strings has also been endorsed by May et al.  and Solanki who also used numbers to encode their candidate solutions. \cite[p.~7076]{may2015} \cite[p.~3868]{solanki2015} Researchers who wish to abandon the traditional approach might need to invent new operators or adapt existing ones to fit their encoding scheme which may be seen as a disadvantage.
 
 \section*{Conclusion}
+
+The research in this area seems to lack rigour and focus. Different researchers have interpreted the problem differently. In effect, each paper seems to propose a solution to a different (self-defined) problem. Some focus on the data whereas some emphasise alterations to the algorithms. There are varying definitions of what "unfair" means in the context of data mining. For this reason, it is difficult to arrive at some conclusion that would bring all the research together. Such a conclusion might not be possible until the research community agrees on what it means for a classification to be unfair.
 
 \begin{thebibliography}{10}
 
@@ -140,34 +131,33 @@ In GAs candidates are most commonly encoded using bit-strings \cite[p.~127]{norv
   % Pages 3867 - 3872,
   % 2015.
 
-  \bibitem{kamishima2018}
-  Kamishima, Toshihiro and Akaho, Shotaro and Asoh, Hideki and Sakuma, Jun,
-  \textit{Model-based and actual independence for fairness-aware classification},
-  Data Mining and Knowledge Discovery,
-  Volume 32,
-  Pages 258 - 286,
-  2018.
+  % \bibitem{kamishima2018}
+  % Kamishima, Toshihiro and Akaho, Shotaro and Asoh, Hideki and Sakuma, Jun,
+  % \textit{Model-based and actual independence for fairness-aware classification},
+  % Data Mining and Knowledge Discovery,
+  % Volume 32,
+  % Pages 258 - 286,
+  % 2018.
 
-  \bibitem{kamishima2013}
-  T. Kamishima, S. Akaho, H. Asoh and J. Sakuma, 
-  \textit{The Independence of Fairness-Aware Classifiers},
-  IEEE 13th International Conference on Data Mining Workshops, Dallas, TX,
-  Pages 849 - 858,
-  2013.
+  % \bibitem{kamishima2013}
+  % T. Kamishima, S. Akaho, H. Asoh and J. Sakuma, 
+  % \textit{The Independence of Fairness-Aware Classifiers},
+  % IEEE 13th International Conference on Data Mining Workshops, Dallas, TX,
+  % Pages 849 - 858,
+  % 2013.
 
-  \bibitem{menon2018}
-  Aditya Krishna Menon and Robert C. Williamson,
-  \textit{The Cost of Fairness in Binary Classification}
-  Proceedings of Machine Learning Research,
-  Conference on Fairness, Accountability, and Transparency,
-  Pages 1 - 12,
-  2018.
+  % \bibitem{menon2018}
+  % Aditya Krishna Menon and Robert C. Williamson,
+  % \textit{The Cost of Fairness in Binary Classification}
+  % Proceedings of Machine Learning Research,
+  % Conference on Fairness, Accountability, and Transparency,
+  % Pages 1 - 12,
+  % 2018.
 
-  \bibitem{zemel}
-  \textit{Learning Fair Representations},
-  Richard Zemel, Yu (Ledell) Wu, Kevin Swersky and Toniann Pitassi.
+  % \bibitem{zemel}
+  % \textit{Learning Fair Representations},
+  % Richard Zemel, Yu (Ledell) Wu, Kevin Swersky and Toniann Pitassi.
 
-  
 \end{thebibliography}
 
 \end{document}
