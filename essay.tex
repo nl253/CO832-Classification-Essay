@@ -1,0 +1,159 @@
+% vim:wrap:textwidth=1000:
+%% options: [no]titlepage, twocolumn, landscape, draft
+\documentclass[a4paper, 12pt, titlepage]{article}
+\usepackage{graphicx}
+\usepackage{titlesec}
+
+\titlespacing*{\section}
+{0pt}{1.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
+\titlespacing*{\subsection}
+{0pt}{1.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=0.35in]{geometry}
+
+\date{} % overwrite default format
+\author{Norbert Logiewa\\nl253}
+\title{Fairness-Aware Classification Algorithms}
+
+\begin{document}
+
+\maketitle
+
+%% NOTES
+%% --------------------------------------------------------------------------------
+%%  1. Do we have any evidence that there are biases in classification algorithms? Trying to fix a problem surely requires proof that there is something to fix.
+%% 
+%%  2. If so, are the biases signification enough to justify the introduction of further complexity to already complex algorithms?
+%% 
+%%  3. Even if an algorithm consistently classifies e.g. single mothers as falling into the category of e.g. "working class", can we really blame it if this is what happens in the vast majority of cases in real life?
+%% 
+%%  4. In what sense can an algorithm be "unfair"? Classification algorithms will produce a model based on the data given to them. It might be that they consistently attach a label to a certain group of people, but if the data is an  accurate reflection of reality, then that label, in the vast majority of cases would be appropriate (e.g. single mothers being working class).
+%% 
+%%  5. Saying that an algorithm is "unfair" is perhaps attributing more intelligence to it than it has. 
+%% 
+%%  6. Presumable, we may tweak an algorithm not to classify single mothers as working  class, for instance, but this might cause the classify to be less accurate.  Which is a questionable approach to take given that the classifier effectively becomes worse at classifying for the sake of satisfying some social agenda.
+%% 
+%%  7. Aren't classifiers *supposed* to make use of the data given to them and predict a value of an attribute based on that? The whole idea is inherently biased. The problem is that we do not have the time nor resources to be "fair" and consider each case individually in an unbiased manner, without regard to the circumstances (attributes). Of course the label that the classifier predicts will not apply in all cases but it's sufficient that it does in the vast majority of samples. If we want to become "fair" then perhaps we should not use classification at all because there is a risk that in some rare cases it might miss-classify (or god forbid take into account information about that  person when predicting behaviour).  That being said, companies that deal with large amounts of clients might not care that 1\% is misclassified.
+%%    
+%%  8. If you do not want to classify based on race or gender then perhaps it's best to remove that column from your data. 
+%%    
+%%  9. Arguably the model will become truly biased if someone tampers with an algorithm to make it "fairer".
+%%  
+%% 10. Rigour: how is fairness defined? How is it measured? Where is evidence that the algorithms we have now: Naive Bayes, Decision Tree, Nearest Neighbour etc. are "unfair"? Do the proposed modification truly make them fairer or just less accurate? Is lack of accuracy supposed to be an indicator of fairness. If so, the fairest classifiers would be the ones which choose randomly without regard for data.
+%% 
+%% 11. It's definitely not fair to classify someone as a worse potential employee due to being  e.g. gay. Intellectually we know that sexual preferences would not affect someone's quality of work directly.  There is no good evidence that race, gender or sexual orientation make someone an unreliable worker but these sensitive traits might affect other attributes that do. Therefore, maybe we should take them into account (i.e. perform classification *with* them) knowing and acknowledging that they are there because of indirect relationships between data. 
+%% 
+%% 12. "Sensitive" attributes? The Equality Act lists: age, gender reassignment, being married or in a civil partnership, being pregnant or on maternity leave, disability, race including colour, nationality, ethnic or national origin, religion or belief, sex, sexual orientation. Arguably this leaves  us (in the case of people) with very little attributes to analyze and create predictions from.
+%% 
+%% 13. Biased data: lack of representation of certain types of people, lack of sampling from all places.
+%%     
+%% 14. Assumptions that the algorithm is based on e.g. Naive Bayes is based on the assumption that features are independent.
+%% 
+%% 15. Data cannot itself be biased, it's as objective as you can get, it's how you interpret it, that might introduce bias.
+%% 
+%% 16. Under what circumstances is it OK to use those sensitive attributes? Credit scores? Dating websites? What is people give consent? Can you make them give consent (else they cannot use your service).
+%% 
+%% 17. Measuring bias. How to assess whether the proposed improvement actually decreased bias.
+
+%% - Introduce the problem
+%% - Legal issues
+%% - "sensitive attributes" 
+%% - mention philosophical issues
+
+In recent years, researchers have began raising the issue of fairness and bias in  classification. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being unfair. "Biased" and unfair will refer to prejudicial, prematurely making a judgment without sufficient valid evidence or making decisions based on incomplete or inaccurate information. This essay will explore how this problem can be addressed.
+
+\section*{Biased Data}
+
+\section*{Proposed Improvements}
+
+\section*{Measuring Bias}
+
+\section*{Unbiased Classification}
+
+\section*{Accuracy vs Fairness}
+
+\section*{Classification}
+
+\section*{The Goal}
+
+The ultimate aim of research into fairness-aware classification algorihtms is to not be biased by incomplete data.
+
+Applying an EA entails the use of 3 main components: a selection operator \footnote{to remove the unfit candidates from the population}, genetic operator \footnote{to generate new candidate solutions} and a fitness function \footnote{to calculate how fit the candidates are} \cite{mesghouni2004, yu2002, diveev2017, aljarrah2017, timilsina2015}.  
+
+In GAs candidates are most commonly encoded using bit-strings \cite[p.~127]{norvig2010} and this encoding has received the most attention in the literature \cite[p.~103]{eberhart2007}.  However, it is not certain that this is the most natural, the most convenient or the most efficient encoding for a scheduling problem.  The standard bit-string encoding has been criticised by Mesghouni et al.  who say ``[...] this approach cannot usually be used for real word engineering problems such as combinatorial ones [...]''\cite[p.~93]{mesghouni2004}. Instead they suggest the use of numbers to represent every gene so that each candidate is a permutation of numbers.  The use of numbers instead of bit-strings has also been endorsed by May et al.  and Solanki who also used numbers to encode their candidate solutions. \cite[p.~7076]{may2015} \cite[p.~3868]{solanki2015} Researchers who wish to abandon the traditional approach might need to invent new operators or adapt existing ones to fit their encoding scheme which may be seen as a disadvantage.
+
+\section*{Conclusion}
+
+\begin{thebibliography}{10}
+
+  % BOOKS
+
+  % \bibitem{eberhart2007}
+  % Russel C Eberhart,
+  % \textit{Computational Intelligence},
+  % \textit{Concepts to Implementations},
+  % Pages 103-118,
+  % Pages 51-68,
+  % Denise E M Penrose,
+  % 2007.
+
+  % \bibitem{heaton2014}
+  % Jeff Heaton,
+  % \textit{Artificial Intelligence for Humans},
+  % \textit{Volume 2: Nature Inspired Algorithms},
+  % Pages 1-100,
+  % Heaton Research, Inc,
+  % 2014.
+
+  % PAPERS
+
+  % \bibitem{may2015}
+  % Gökan May, Bojan Stahl, Marco Taisch and Vittal Prabhu,
+  % \textit{Multi-objective genetic algorithm for energy-efficient job shop scheduling},
+  % International Journal of Production Research
+  % Volume 53,
+  % No 23, 
+  % Pages  7071 - 7089,
+  % 2015.
+
+  % \bibitem{solanki2015}
+  % Sachin V. Solanki,
+  % \textit{Genetic Algorithm Approach for Implementation of Job Scheduling Problem},
+  % International Journal on Recent and Innovation Trends in Computing and Communication,
+  % Volume 3,
+  % Issue 6,
+  % Pages 3867 - 3872,
+  % 2015.
+
+  \bibitem{kamishima2018}
+  Kamishima, Toshihiro and Akaho, Shotaro and Asoh, Hideki and Sakuma, Jun,
+  \textit{Model-based and actual independence for fairness-aware classification},
+  Data Mining and Knowledge Discovery,
+  Volume 32,
+  Pages 258 - 286,
+  2018.
+
+  \bibitem{kamishima2013}
+  T. Kamishima, S. Akaho, H. Asoh and J. Sakuma, 
+  \textit{The Independence of Fairness-Aware Classifiers},
+  IEEE 13th International Conference on Data Mining Workshops, Dallas, TX,
+  Pages 849 - 858,
+  2013.
+
+  \bibitem{menon2018}
+  Aditya Krishna Menon and Robert C. Williamson,
+  \textit{The Cost of Fairness in Binary Classification}
+  Proceedings of Machine Learning Research,
+  Conference on Fairness, Accountability, and Transparency,
+  Pages 1 - 12,
+  2018.
+
+  \bibitem{zemel}
+  \textit{Learning Fair Representations},
+  Richard Zemel, Yu (Ledell) Wu, Kevin Swersky and Toniann Pitassi.
+
+  
+\end{thebibliography}
+
+\end{document}
