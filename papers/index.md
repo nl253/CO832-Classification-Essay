@@ -45,8 +45,6 @@
   - long
   - 2/5
 
-- Fairness-aware Learning through Regularization Approach
-
 - The Cost of Fairness in Binary Classification
 
   - conference paper
