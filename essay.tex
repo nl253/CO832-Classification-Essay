@@ -22,141 +22,112 @@
 
 %% NOTES
 %% --------------------------------------------------------------------------------
-%%  1. Do we have any evidence that there are biases in classification algorithms? Trying to fix a problem surely requires proof that there is something to fix.
-%% 
 %%  2. If so, are the biases signification enough to justify the introduction of further complexity to already complex algorithms?
 %% 
 %%  3. Even if an algorithm consistently classifies e.g. single mothers as falling into the category of e.g. "working class", can we really blame it if this is what happens in the vast majority of cases in real life?
 %% 
 %%  4. In what sense can an algorithm be "unfair"? Classification algorithms will produce a model based on the data given to them. It might be that they consistently attach a label to a certain group of people, but if the data is an  accurate reflection of reality, then that label, in the vast majority of cases would be appropriate (e.g. single mothers being working class).
-%% 
-%%  5. Saying that an algorithm is "unfair" is perhaps attributing more intelligence to it than it has. 
-%% 
-%%  6. Presumable, we may tweak an algorithm not to classify single mothers as working  class, for instance, but this might cause the classify to be less accurate.  Which is a questionable approach to take given that the classifier effectively becomes worse at classifying for the sake of satisfying some social agenda.
-%% 
-%%  7. Aren't classifiers *supposed* to make use of the data given to them and predict a value of an attribute based on that? The whole idea is inherently biased. The problem is that we do not have the time nor resources to be "fair" and consider each case individually in an unbiased manner, without regard to the circumstances (attributes). Of course the label that the classifier predicts will not apply in all cases but it's sufficient that it does in the vast majority of samples. If we want to become "fair" then perhaps we should not use classification at all because there is a risk that in some rare cases it might miss-classify (or god forbid take into account information about that  person when predicting behaviour).  That being said, companies that deal with large amounts of clients might not care that 1\% is misclassified.
-%%    
-%%  8. If you do not want to classify based on race or gender then perhaps it's best to remove that column from your data. 
-%%    
-%%  9. Arguably the model will become truly biased if someone tampers with an algorithm to make it "fairer".
-%%  
-%% 10. Rigour: how is fairness defined? How is it measured? Where is evidence that the algorithms we have now: Naive Bayes, Decision Tree, Nearest Neighbour etc. are "unfair"? Do the proposed modification truly make them fairer or just less accurate? Is lack of accuracy supposed to be an indicator of fairness. If so, the fairest classifiers would be the ones which choose randomly without regard for data.
-%% 
-%% 11. It's definitely not fair to classify someone as a worse potential employee due to being  e.g. gay. Intellectually we know that sexual preferences would not affect someone's quality of work directly.  There is no good evidence that race, gender or sexual orientation make someone an unreliable worker but these sensitive traits might affect other attributes that do. Therefore, maybe we should take them into account (i.e. perform classification *with* them) knowing and acknowledging that they are there because of indirect relationships between data. 
-%% 
-%% 12. "Sensitive" attributes? The Equality Act lists: age, gender reassignment, being married or in a civil partnership, being pregnant or on maternity leave, disability, race including colour, nationality, ethnic or national origin, religion or belief, sex, sexual orientation. Arguably this leaves  us (in the case of people) with very little attributes to analyze and create predictions from.
-%% 
-%% 13. Biased data: lack of representation of certain types of people, lack of sampling from all places.
-%%     
-%% 14. Assumptions that the algorithm is based on e.g. Naive Bayes is based on the assumption that features are independent.
-%% 
-%% 15. Data cannot itself be biased, it's as objective as you can get, it's how you interpret it, that might introduce bias.
-%% 
-%% 16. Under what circumstances is it OK to use those sensitive attributes? Credit scores? Dating websites? What is people give consent? Can you make them give consent (else they cannot use your service).
-%% 
-%% 17. Measuring bias. How to assess whether the proposed improvement actually decreased bias.
-
-%% - Introduce the problem
-%% - Legal issues
-%% - "sensitive attributes" 
-%% - mention philosophical issues
-
-In recent years, researchers have began raising the issue of fairness and bias in  classification. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being "unfair". \footnote{\emph{Biased} and \emph{unfair} will refer to prejudicial, prematurely making a judgment without sufficient valid evidence, classifying based on what the majority is like and ignoring individual differences or making decisions based on incomplete or inaccurate information.}
 
 
-The problem can be looked at from a number of perspectives. Various researcher have interpreted the problem differently. Firstly, we can consider how the assumptions of an algorithm or the way it creates the model cause it the be biased. It may be more or less sensitive to some or some combinations of attributes. Secondly, we can consider how the training dataset may bias the model. Within that we can discuss the issues of data inaccuracies \footnote{missing attributes and biased collection}, class imbalance \footnote{underrepresentation of some classes} and statistical significance of predictions. Thirdly can can consider the case of making predictions based on protected attributes \footnote{gender, race, age, sexual orientation etc.} in general. Some decisions that are made based on the output of classifiers may seriously affect people's lives \footnote{e.g. credit score}. 
+In recent years, researchers have began raising the issue of fairness and bias in classification. \cite{pedreshi2008}. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being "unfair".
 
-There are ethical and legal issues associated with this problem \footnote{The Equality Act} so the data mining community has began investigating ways in which we can remedy it which this essay will discuss.
+Classification is a supervised learning technique that relies on using existing data to construct a model to use for predictions. The use of data points and construction of a model based on them necessitates distinction between different instances (i.e. discrimination). The idea of classification is inherently discriminatory, however, in the context of this essay, to be unfair, discriminatory or bias will refer to classification based on \emph{protected attributes}. \footnote{The Equality Act lists: age, gender reassignment, being married or in a civil partnership, being pregnant or on maternity leave, disability, race including colour, nationality, ethnic or national origin, religion or belief, sex, sexual orientation as \emph{protected attributes}}. There are ethical and legal issues associated with this problem and some decisions that are made based on the output of classifiers may seriously affect people's lives (e.g. credit score). Therefore, the data mining community has began investigating ways in which we can remedy it which this essay will discuss.
 
-\section*{Biased Data}
+% \section*{Origins of Bias}
 
-One of the potential root causes of bias in a classification task can be the dataset. Data can be collected in such a way that there is a lack of representation from certain individuals. For instance, a video streaming company might collect data about it's users. From that data, they might infer, that people of Asian descent have a preference for comedies. However the vast majority of the company's clients are from Europe. Since Asian people do not originate from Europe they are underrepresented. As a result, they might constitute a small fraction of the user base. If the company was to make predictions based on that data they might be biased by the particular behaviour of (relatively) small number of the Asian people living in Europe. The predictions that said company makes about Asians living in Asia may not be valid at all.
+% Indre pointed out that the bias is in the dataset and that an algorithm cannot be unfair in itself, they can, however be "discrimination-aware" if they employ measures to compat bias. This is, as he argued, because algorithms are not used for decision making, all they do is construct a model. Therefore, it is the model that may be biased. \cite[p.~7]{indre2015}
 
-The fundamental issue is that the traditional algorithms used in data mining do not focus on correcting errors or deficiencies of the dataset. In a sense they blindly trust the input data as a representation of reality. This might cause them to be misled by the errors in dataset.
+\section*{A Naive Solution}
 
-Questions that data mining experts should be asking themselves when making predictions are:
+A naive solution to the problem of sensitive features would be to remove them from the dataset. E.g. if we were in the business of estimating an individual's credit score and there was a dataset with columns: "FirstName", "LastName", "Age", "Race", "Salary", "HistoryOfIllness" ... based on which the credit score was to be computed, we would remove "Age" and "Race" to ensure that these characteristics don't influence the final decision.
+Researchers have pointed out a flaw in this reasoning, namely that these removed sensitive features \emph{still} influence other features in an indirect fashion (e.g. age may be correlated with salary) \cite[p.~36]{kamishima2012a} \cite[p.~378]{kamishima2012b} \cite[p.~381]{kamishima2012b}. This effect has been termed \emph{red-lining effect} and is an instance of indirect discrimination. \cite[p.~380]{kamishima2012b}
 
-\section*{Proposed Improvements}
+% \section*{Biased Data}
 
-\section*{Measuring Bias}
+% One of the potential root causes of bias in a classification task can be the dataset. Data can be collected in such a way that there is a lack of representation from certain individuals. For instance, a video streaming company might collect data about it's users. From that data, they might infer, that people of Asian descent have a preference for comedies. However the vast majority of the company's clients are from Europe. Since Asian people do not originate from Europe they are underrepresented. As a result, they might constitute a small fraction of the user base. If the company was to make predictions based on that data they might be biased by the particular behaviour of (relatively) small number of the Asian people living in Europe. The predictions that said company makes about Asians living in Asia may not be valid at all.
 
-\section*{Unbiased Classification}
+% The fundamental issue is that the traditional algorithms used in data mining do not focus on correcting errors or deficiencies of the dataset. In a sense they blindly trust the input data as a representation of reality. This might cause them to be misled by the errors in dataset.
+
+% Questions that data mining experts should be asking themselves when making predictions are:
+
+\section*{Measuring Fairness}
+
+A major problem within the area of fairness-aware classification is measuring the extent of bias and fairness. Various suggestions have been put forward.
+Kamishima et al. suggest that it may be formalized as lack of correlation between sensitive features and the outcome. \cite[p.~259]{kamishima2018}.
+
+Indre in his survey discusses the various measures that have emerged to calculate the degree of bias. He categorises them into: statistical tests, absolute measures, conditional measures and structural measures. He argues that to determine whether the classifier is fair, we must have access to protected characteristics. \cite[p.~8]{indre2015}
+
+A measure of fitness discussed by Kamishima was \emph{Calders and Verwer's Discrimination Score} (CV score). An approach might be taken to combat bias in classification is taking a measure of bias such as CV score \footnote{There are also other measures such as \emph{Disparate Impact (DI)}.} and tweaking the model in such a way that the score begins to approach 0. 
 
 \section*{Accuracy vs Fairness}
 
-% In GAs candidates are most commonly encoded using bit-strings \cite[p.~127]{norvig2010} and this encoding has received the most attention in the literature \cite[p.~103]{eberhart2007}.  However, it is not certain that this is the most natural, the most convenient or the most efficient encoding for a scheduling problem.  The standard bit-string encoding has been criticised by Mesghouni et al.  who say ``[...] this approach cannot usually be used for real word engineering problems such as combinatorial ones [...]''\cite[p.~93]{mesghouni2004}. Instead they suggest the use of numbers to represent every gene so that each candidate is a permutation of numbers.  The use of numbers instead of bit-strings has also been endorsed by May et al.  and Solanki who also used numbers to encode their candidate solutions. \cite[p.~7076]{may2015} \cite[p.~3868]{solanki2015} Researchers who wish to abandon the traditional approach might need to invent new operators or adapt existing ones to fit their encoding scheme which may be seen as a disadvantage.
+The modifications to existing algorithms \emph{may} force us to sacrifice some accuracy.  An important part of devising a fairness-aware classifier is considering the trade-off between fairness and accuracy. The aim is to have a high level of fairness but still be able to make accurate predictions.  \cite[p.~259]{kamishima2018} \cite[p.~9]{menon2018}. 
+
+\section*{Proposed Improvements}
+
+A number of modification to existing algorithms have been proposed.
+
+\subsection*{Calders and Verwer's two-naive- Bayes (CV2NB)}
 
 \section*{Conclusion}
 
-The research in this area seems to lack rigour and focus. Different researchers have interpreted the problem differently. In effect, each paper seems to propose a solution to a different (self-defined) problem. Some focus on the data whereas some emphasise alterations to the algorithms. There are varying definitions of what "unfair" means in the context of data mining. For this reason, it is difficult to arrive at some conclusion that would bring all the research together. Such a conclusion might not be possible until the research community agrees on what it means for a classification to be unfair.
+In summary efforts have been made to address the issue of fairness in classification. Different researchers have proposed different modifications to existing algorithms. There are also a number of different measures of bias. The research community does not seem to be agreement on which measure to use or even if this measure is a good reflection of the extent of "unfairness". This makes it difficult to verify that the proposed modified versions of ML algorithms really solve the problem.
 
 \begin{thebibliography}{10}
 
-  % BOOKS
-
-  % \bibitem{eberhart2007}
-  % Russel C Eberhart,
-  % \textit{Computational Intelligence},
-  % \textit{Concepts to Implementations},
-  % Pages 103-118,
-  % Pages 51-68,
-  % Denise E M Penrose,
-  % 2007.
-
-  % \bibitem{heaton2014}
-  % Jeff Heaton,
-  % \textit{Artificial Intelligence for Humans},
-  % \textit{Volume 2: Nature Inspired Algorithms},
-  % Pages 1-100,
-  % Heaton Research, Inc,
-  % 2014.
-
   % PAPERS
+  
+  \bibitem{pedreshi2008}
+  Dino Pedreshi, Salvatore Ruggieri, and Franco
+Turini,
+  Discrimination-aware data mining,
+  In ACM SIGKDD International Conference on Knowledge
+Discovery and Data Mining (KDD),
+  Pages 560 - 568, 
+  2008.
 
-  % \bibitem{may2015}
-  % Gökan May, Bojan Stahl, Marco Taisch and Vittal Prabhu,
-  % \textit{Multi-objective genetic algorithm for energy-efficient job shop scheduling},
-  % International Journal of Production Research
-  % Volume 53,
-  % No 23, 
-  % Pages  7071 - 7089,
-  % 2015.
+  \bibitem{kamishima2012a}
+  T. Kamishima, S. Akaho, H. Asoh and J. Sakuma,
+  \textit{Considerations on Fairness-Aware Data Mining},
+    IEEE 12th International Conference on Data Mining Workshops, Brussels,
+    Pages 378 - 385,
+    2012.
 
-  % \bibitem{solanki2015}
-  % Sachin V. Solanki,
-  % \textit{Genetic Algorithm Approach for Implementation of Job Scheduling Problem},
-  % International Journal on Recent and Innovation Trends in Computing and Communication,
-  % Volume 3,
-  % Issue 6,
-  % Pages 3867 - 3872,
-  % 2015.
+  \bibitem{kamishima2012b}
+  Kamishima, Toshihiro and Akaho, Shotaro and Asoh, Hideki and Sakuma, Jun,
+  \textit{Fairness-Aware Classifier with Prejudice Remover Regularizer}
+  Machine Learning and Knowledge Discovery in Databases,
+  Pages 35 - 50,
+  Springer Berlin Heidelberg,
+  2012.
 
-  % \bibitem{kamishima2018}
-  % Kamishima, Toshihiro and Akaho, Shotaro and Asoh, Hideki and Sakuma, Jun,
-  % \textit{Model-based and actual independence for fairness-aware classification},
-  % Data Mining and Knowledge Discovery,
-  % Volume 32,
-  % Pages 258 - 286,
-  % 2018.
+  \bibitem{kamishima2018}
+  Kamishima, Toshihiro and Akaho, Shotaro and Asoh, Hideki and Sakuma, Jun,
+  \textit{Model-based and actual independence for fairness-aware classification},
+  Data Mining and Knowledge Discovery,
+  Volume 32,
+  Pages 258 - 286,
+  2018.
 
-  % \bibitem{kamishima2013}
-  % T. Kamishima, S. Akaho, H. Asoh and J. Sakuma, 
-  % \textit{The Independence of Fairness-Aware Classifiers},
-  % IEEE 13th International Conference on Data Mining Workshops, Dallas, TX,
-  % Pages 849 - 858,
-  % 2013.
+  \bibitem{kamishima2013}
+  T. Kamishima, S. Akaho, H. Asoh and J. Sakuma, 
+  \textit{The Independence of Fairness-Aware Classifiers},
+  IEEE 13th International Conference on Data Mining Workshops, Dallas, TX,
+  Pages 849 - 858,
+  2013.
 
-  % \bibitem{menon2018}
-  % Aditya Krishna Menon and Robert C. Williamson,
-  % \textit{The Cost of Fairness in Binary Classification}
-  % Proceedings of Machine Learning Research,
-  % Conference on Fairness, Accountability, and Transparency,
-  % Pages 1 - 12,
-  % 2018.
+  \bibitem{menon2018}
+  Aditya Krishna Menon and Robert C. Williamson,
+  \textit{The Cost of Fairness in Binary Classification},
+  Proceedings of Machine Learning Research,
+  Conference on Fairness, Accountability, and Transparency,
+  Pages 1 - 12,
+  2018.
 
-  % \bibitem{zemel}
-  % \textit{Learning Fair Representations},
-  % Richard Zemel, Yu (Ledell) Wu, Kevin Swersky and Toniann Pitassi.
+  \bibitem{indre2015}
+  Zliobaite, Indre,
+  \textit{A survey on measuring indirect discrimination in machine learning}, 
+  2015. 
 
 \end{thebibliography}
 
