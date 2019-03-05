@@ -6,24 +6,27 @@
 \usepackage{titlesec}
 
 \titlespacing*{\section}
-{0pt}{1.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
+{1.25pt}{1.2ex plus 1ex minus .2ex}{1.0ex plus .2ex}
 \titlespacing*{\subsection}
-{0pt}{1.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
+{0.5pt}{1.2ex plus 1ex minus .2ex}{1.0ex plus .2ex}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
-\usepackage[margin=0.8in]{geometry}
+\usepackage[margin=0.7in]{geometry}
 
 \date{} % overwrite default format
-\author{Norbert Logiewa\\nl253}
+% \author{Norbert Logiewa\\nl253}
+\author{}
 \title{Fairness-Aware Classification Algorithms}
 
 \begin{document}
 
 \maketitle
 
+\vspace{-0.85cm}
+
 In recent years, researchers have began raising the issue of fairness and bias in classification. \cite{pedreshi2008}. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being "unfair".
 
-Classification is a supervised learning technique that relies on using existing data to construct a model to use for predictions. The use of data points and construction of a model based on them necessitates distinction between different instances (i.e. discrimination). The idea of classification is inherently discriminatory, however, in the context of this essay, to be unfair, discriminatory or bias will refer to classification based on \emph{protected attributes}. \footnote{The Equality Act lists: age, gender reassignment, being married or in a civil partnership, being pregnant or on maternity leave, disability, race including colour, nationality, ethnic or national origin, religion or belief, sex, sexual orientation as \emph{protected attributes}}. There are ethical and legal issues associated with this problem and some decisions that are made based on the output of classifiers may seriously affect people's lives (e.g. credit score). Therefore, the data mining community has began investigating ways in which we can remedy it which this essay will discuss.
+Classification is a supervised learning technique that relies on using existing data to construct a model to use for predictions. The use of data points and construction of a model based on them necessitates distinction between different instances (i.e. discrimination). The idea of classification is inherently discriminatory, however, in the context of this essay, to be unfair, discriminatory or bias will refer to classification based on \emph{protected attributes}. \footnote{In the UK The Equality Act lists: age, gender reassignment, being married or in a civil partnership, being pregnant or on maternity leave, disability, race including colour, nationality, ethnic or national origin, religion or belief, sex, sexual orientation as \emph{protected attributes}}. There are ethical and legal issues associated with this problem and some decisions that are made based on the output of classifiers may seriously affect people's lives (e.g. credit score). Therefore, the data mining community has began investigating ways in which we can remedy it which this essay will discuss.
 
 % \section*{Origins of Bias}
 
@@ -32,17 +35,30 @@ Classification is a supervised learning technique that relies on using existing 
 \section*{A Naive Solution}
 
 A naive solution to the problem of sensitive features would be to remove them from the dataset. E.g. if we were in the business of estimating an individual's credit score and there was a dataset with columns: "FirstName", "LastName", "Age", "Race", "Salary", "HistoryOfIllness" ... based on which the credit score was to be computed, we would remove "Age" and "Race" to ensure that these characteristics don't influence the final decision.
-Researchers have pointed out a flaw in this reasoning, namely that these removed sensitive features \emph{still} influence other features in an indirect fashion (e.g. age may be correlated with salary) \cite[p.~36]{kamishima2012a} \cite[p.~378]{kamishima2012b} \cite[p.~381]{kamishima2012b}. This effect has been termed \emph{red-lining effect} and is an instance of indirect discrimination. \cite[p.~380]{kamishima2012b}
+Researchers have pointed out a flaw in this reasoning, namely that these removed sensitive features \emph{still} influence other features in an indirect fashion (e.g. age may be correlated with salary) . This effect has been termed \emph{red-lining effect} and is an instance of indirect discrimination.
+ \cite[p.~36]{kamishima2012b} \cite[p.~378]{kamishima2012a} \cite[p.~380]{kamishima2012a} \cite[p.~381]{kamishima2012a} 
 
 \section*{Measuring Fairness}
 
 A major problem within the area of fairness-aware classification is measuring the extent of bias and fairness. \cite[p.281]{calders2010} Various suggestions have been put forward.
 
+\vspace{0.25cm}
+
 Indre in his survey discusses the various measures that have emerged to calculate the degree of bias. He categorises them into: statistical tests, absolute measures, conditional measures and structural measures. He argues that to determine whether the classifier is fair, we must have access to protected characteristics to be able to assess the degree of fairness of predictions with respect to them. \cite[p.~8]{indre2015}
+
+\vspace{0.25cm}
 
 Kamishima et al. suggest that it may be formalized as lack of correlation between sensitive features and the outcome. \cite[p.~259]{kamishima2018}.
 
-A measure of fitness discussed by Kamishima was \emph{Calders and Verwer's Discrimination Score} (CV score). CV score is defined formally as: \footnote{where $P$ is the probability, $S$ is the sensitive attribute, $Y$ is the actual value and $\hat{Y}$ is the predicted value}
+\vspace{0.25cm}
+
+A measure of fitness invented by Calders and Verwer's was \emph{Calders and Verwer's Discrimination Score} (CV score) \cite[p.~281]{calders2010}. It has been used by a number of researchers to estimate discrimination.  \cite[p.~44]{kamishima2012b} \cite[p.~381]{kamishima2012a}
+
+\vspace{0.5cm}
+
+\pagebreak
+
+CV score is defined formally as: \footnote{where $P$ is the probability, $S$ is the sensitive attribute, $Y$ is the actual value and $\hat{Y}$ is the predicted value}
 
 \[
   1 - (P\big[ \hat{Y} = 1 | S = 1\big] - P \big[ \hat{Y} - 1 | S \neq 1 \big])
@@ -57,19 +73,25 @@ The fundamental issue is that the traditional algorithms used in data mining are
 \subsection*{Calders and Verwer's two-naive-Bayes (CV2NB)}
 
 % this is plagiarised, quote or reword it
-One of the algorithms that makes use of the said measure is the CV2NB invented by Calders and Verwer \cite{calders2010}. In this approach when dealing with a binary sensitve attribute, two models are constructed which are trained on a portion of the dataset where the attribute have a value of 0 and 1. E.g. one model for males and one for females. When making predictions to algorithm makes a choice about which model to choose based on the value of the sensitive attribute. \cite[p.~283]{calders2010}. A downside of the paper was that their comparison discussed 3 modifications to the Naive Bayes algorithm but did not compare them to the original algorithm which made it impossible to see whether their alterations fixed the issue of discrimination and how much accuracy was lost.
+One of the algorithms that makes use of CV score is the CV2NB invented by Calders and Verwer \cite{calders2010}. In this approach when dealing with a binary sensitive attribute, two models are constructed which are trained on a portion of the dataset where the attribute have a value of 0 and 1. E.g. one model for males and one for females. When making predictions to algorithm makes a choice about which model to choose based on the value of the sensitive attribute. \cite[p.~283]{calders2010}. A downside of the paper was that their comparison discussed 3 modifications to the Naive Bayes algorithm but did not compare them to the original algorithm which made it impossible to see whether their alterations fixed the issue of discrimination and how much accuracy was lost.
 
 \subsection*{Prejudice Remover Regularizer}
 
 A different approach was taken by Kamishima et al. The researchers used PI as a measure of discrimination and proposed a regularizer which attempts to remove indirect prejudice by modifying the original equation of the classifier \footnote{the authors use logistic regression to demonstrate it}. The modification requires "modest" resources and is usable with "any prediction algorithm with probabilistic discriminative model" \cite[p.~35]{kamishima2012b}. Kamishima et al. compared their results with CV2NB and managed to obtain promising results. Their regularizer manages to decrease discrimination so that it becomes competitive with CV2NB. By setting $\eta = 20$, \footnote{$\eta$ regulated the amount of discrimination removed} the researchers  were able to decrease discrimination to 0.010 on the CV scale but at the expense of accuracy which dropped to 0.769. This is compared to 0.842 accuracy with $\eta = 5$.
 
-\vspace{0.3cm}
+\subsection*{}
 
-Importantly, the use of those interventions, in both cases, resulted in decreased accuracy. On the other hand, they did decrease discrimination as measured by CV and prejudice index. \cite[p.~44]{kamishima2012b} \cite{calders2010} This is problematic since the ultimate aim of classification is to make \empf{accurate} predictions.
+\vspace{-0.75cm}
+
+Importantly, the use of those interventions, in both cases, resulted in decreased accuracy. On the other hand, they did decrease discrimination as measured by CV and prejudice index. \cite[p.~44]{kamishima2012b} \cite{calders2010} This is problematic since the ultimate aim of classification is to make \emph{accurate} predictions.
+
+\vspace{0.2cm}
 
 \section*{Conclusion}
 
 Efforts have been made to address the issue of fairness in classification. These include: invention of measures to estimate discrimination and modification of existing algorithms to reduce bias. Two such modifications were discussed here. There seems to be a trade-off between accuracy and fairness which was evident in the lowering of accuracy as discrimination decreased. The fact that different researchers used different measures to calculate bias suggests there does not seem to be an agreement in the research community on: which measure to use and if any of the measures is a good reflection of the extent of "unfairness". 
+
+\vspace{0.6cm}
 
 \begin{thebibliography}{10}
 
