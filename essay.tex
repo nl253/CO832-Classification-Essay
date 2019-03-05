@@ -1,6 +1,7 @@
 % vim:wrap:textwidth=1000:
 %% options: [no]titlepage, twocolumn, landscape, draft
-\documentclass[a4paper, 12pt, titlepage]{article}
+\documentclass[a4paper, 12pt, notitlepage]{article}
+\usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{titlesec}
 
@@ -10,7 +11,7 @@
 {0pt}{1.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
-\usepackage[margin=0.35in]{geometry}
+\usepackage[margin=0.8in]{geometry}
 
 \date{} % overwrite default format
 \author{Norbert Logiewa\\nl253}
@@ -19,15 +20,6 @@
 \begin{document}
 
 \maketitle
-
-%% NOTES
-%% --------------------------------------------------------------------------------
-%%  2. If so, are the biases signification enough to justify the introduction of further complexity to already complex algorithms?
-%% 
-%%  3. Even if an algorithm consistently classifies e.g. single mothers as falling into the category of e.g. "working class", can we really blame it if this is what happens in the vast majority of cases in real life?
-%% 
-%%  4. In what sense can an algorithm be "unfair"? Classification algorithms will produce a model based on the data given to them. It might be that they consistently attach a label to a certain group of people, but if the data is an  accurate reflection of reality, then that label, in the vast majority of cases would be appropriate (e.g. single mothers being working class).
-
 
 In recent years, researchers have began raising the issue of fairness and bias in classification. \cite{pedreshi2008}. There have been concerns about classification algorithms or some models created with those algorithm with some datasets being "unfair".
 
@@ -42,41 +34,48 @@ Classification is a supervised learning technique that relies on using existing 
 A naive solution to the problem of sensitive features would be to remove them from the dataset. E.g. if we were in the business of estimating an individual's credit score and there was a dataset with columns: "FirstName", "LastName", "Age", "Race", "Salary", "HistoryOfIllness" ... based on which the credit score was to be computed, we would remove "Age" and "Race" to ensure that these characteristics don't influence the final decision.
 Researchers have pointed out a flaw in this reasoning, namely that these removed sensitive features \emph{still} influence other features in an indirect fashion (e.g. age may be correlated with salary) \cite[p.~36]{kamishima2012a} \cite[p.~378]{kamishima2012b} \cite[p.~381]{kamishima2012b}. This effect has been termed \emph{red-lining effect} and is an instance of indirect discrimination. \cite[p.~380]{kamishima2012b}
 
-% \section*{Biased Data}
-
-% One of the potential root causes of bias in a classification task can be the dataset. Data can be collected in such a way that there is a lack of representation from certain individuals. For instance, a video streaming company might collect data about it's users. From that data, they might infer, that people of Asian descent have a preference for comedies. However the vast majority of the company's clients are from Europe. Since Asian people do not originate from Europe they are underrepresented. As a result, they might constitute a small fraction of the user base. If the company was to make predictions based on that data they might be biased by the particular behaviour of (relatively) small number of the Asian people living in Europe. The predictions that said company makes about Asians living in Asia may not be valid at all.
-
-% The fundamental issue is that the traditional algorithms used in data mining do not focus on correcting errors or deficiencies of the dataset. In a sense they blindly trust the input data as a representation of reality. This might cause them to be misled by the errors in dataset.
-
-% Questions that data mining experts should be asking themselves when making predictions are:
-
 \section*{Measuring Fairness}
 
-A major problem within the area of fairness-aware classification is measuring the extent of bias and fairness. Various suggestions have been put forward.
+A major problem within the area of fairness-aware classification is measuring the extent of bias and fairness. \cite[p.281]{calders2010} Various suggestions have been put forward.
+
+Indre in his survey discusses the various measures that have emerged to calculate the degree of bias. He categorises them into: statistical tests, absolute measures, conditional measures and structural measures. He argues that to determine whether the classifier is fair, we must have access to protected characteristics to be able to assess the degree of fairness of predictions with respect to them. \cite[p.~8]{indre2015}
+
 Kamishima et al. suggest that it may be formalized as lack of correlation between sensitive features and the outcome. \cite[p.~259]{kamishima2018}.
 
-Indre in his survey discusses the various measures that have emerged to calculate the degree of bias. He categorises them into: statistical tests, absolute measures, conditional measures and structural measures. He argues that to determine whether the classifier is fair, we must have access to protected characteristics. \cite[p.~8]{indre2015}
+A measure of fitness discussed by Kamishima was \emph{Calders and Verwer's Discrimination Score} (CV score). CV score is defined formally as: \footnote{where $P$ is the probability, $S$ is the sensitive attribute, $Y$ is the actual value and $\hat{Y}$ is the predicted value}
 
-A measure of fitness discussed by Kamishima was \emph{Calders and Verwer's Discrimination Score} (CV score). An approach might be taken to combat bias in classification is taking a measure of bias such as CV score \footnote{There are also other measures such as \emph{Disparate Impact (DI)}.} and tweaking the model in such a way that the score begins to approach 0. 
+\[
+  1 - (P\big[ \hat{Y} = 1 | S = 1\big] - P \big[ \hat{Y} - 1 | S \neq 1 \big])
+\] 
 
-\section*{Accuracy vs Fairness}
-
-The modifications to existing algorithms \emph{may} force us to sacrifice some accuracy.  An important part of devising a fairness-aware classifier is considering the trade-off between fairness and accuracy. The aim is to have a high level of fairness but still be able to make accurate predictions.  \cite[p.~259]{kamishima2018} \cite[p.~9]{menon2018}. 
+An approach might be taken to combat bias in classification is taking a measure of bias such as CV score \footnote{There are also other measures such as \emph{Disparate Impact (DI)} and Prejudice Index (PI).} and tweaking the model in such a way that the score begins to approach 0. 
 
 \section*{Proposed Improvements}
 
-A number of modification to existing algorithms have been proposed.
+The fundamental issue is that the traditional algorithms used in data mining are not aware of issues of social equality. They treat all features in a uniform manner. To remedy that a number of modification to existing algorithms have been proposed.
 
-\subsection*{Calders and Verwer's two-naive- Bayes (CV2NB)}
+\subsection*{Calders and Verwer's two-naive-Bayes (CV2NB)}
+
+% this is plagiarised, quote or reword it
+One of the algorithms that makes use of the said measure is the CV2NB invented by Calders and Verwer \cite{calders2010}. In this approach when dealing with a binary sensitve attribute, two models are constructed which are trained on a portion of the dataset where the attribute have a value of 0 and 1. E.g. one model for males and one for females. When making predictions to algorithm makes a choice about which model to choose based on the value of the sensitive attribute. \cite[p.~283]{calders2010}. A downside of the paper was that their comparison discussed 3 modifications to the Naive Bayes algorithm but did not compare them to the original algorithm which made it impossible to see whether their alterations fixed the issue of discrimination and how much accuracy was lost.
+
+\subsection*{Prejudice Remover Regularizer}
+
+A different approach was taken by Kamishima et al. The researchers used PI as a measure of discrimination and proposed a regularizer which attempts to remove indirect prejudice by modifying the original equation of the classifier \footnote{the authors use logistic regression to demonstrate it}. The modification requires "modest" resources and is usable with "any prediction algorithm with probabilistic discriminative model" \cite[p.~35]{kamishima2012b}. Kamishima et al. compared their results with CV2NB and managed to obtain promising results. Their regularizer manages to decrease discrimination so that it becomes competitive with CV2NB. By setting $\eta = 20$, \footnote{$\eta$ regulated the amount of discrimination removed} the researchers  were able to decrease discrimination to 0.010 on the CV scale but at the expense of accuracy which dropped to 0.769. This is compared to 0.842 accuracy with $\eta = 5$.
+
+\vspace{0.3cm}
+
+Importantly, the use of those interventions, in both cases, resulted in decreased accuracy. On the other hand, they did decrease discrimination as measured by CV and prejudice index. \cite[p.~44]{kamishima2012b} \cite{calders2010} This is problematic since the ultimate aim of classification is to make \empf{accurate} predictions.
 
 \section*{Conclusion}
 
-In summary efforts have been made to address the issue of fairness in classification. Different researchers have proposed different modifications to existing algorithms. There are also a number of different measures of bias. The research community does not seem to be agreement on which measure to use or even if this measure is a good reflection of the extent of "unfairness". This makes it difficult to verify that the proposed modified versions of ML algorithms really solve the problem.
+Efforts have been made to address the issue of fairness in classification. These include: invention of measures to estimate discrimination and modification of existing algorithms to reduce bias. Two such modifications were discussed here. There seems to be a trade-off between accuracy and fairness which was evident in the lowering of accuracy as discrimination decreased. The fact that different researchers used different measures to calculate bias suggests there does not seem to be an agreement in the research community on: which measure to use and if any of the measures is a good reflection of the extent of "unfairness". 
 
 \begin{thebibliography}{10}
 
   % PAPERS
   
+  % [UNUSED]
   \bibitem{friedler2018}
   \textit{A comparative study of fairness-enhancing interventions in machine learning},
   A. Friedler, Sorelle \& Scheidegger, Carlos \& Venkatasubramanian, Suresh \& Choudhary, Sonam \& P. Hamilton, Evan \& Roth, Derek,
@@ -112,6 +111,7 @@ In summary efforts have been made to address the issue of fairness in classifica
   Pages 258 - 286,
   2018.
 
+  % [UNUSED]
   \bibitem{kamishima2013}
   T. Kamishima, S. Akaho, H. Asoh and J. Sakuma, 
   \textit{The Independence of Fairness-Aware Classifiers},
@@ -129,8 +129,15 @@ In summary efforts have been made to address the issue of fairness in classifica
 
   \bibitem{indre2015}
   Zliobaite, Indre,
-  \textit{A survey on measuring indirect discrimination in machine learning}, 
+  \textit{A survey on measuring indirect discrimination in machine learning},
   2015. 
+
+
+  \bibitem{calders2010}
+  Toon Calders and Sicco Verwer,
+  \textit{Three Naive Bayes Approaches for Discrimination-Free Classification},
+  Data Mining journal,
+  2010. 
 
 \end{thebibliography}
 
